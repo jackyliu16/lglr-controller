@@ -41,16 +41,13 @@ monitor:
 
 # Running development environment
 env:
-	nix develop .# --impure --extra-experimental-features nix-command --extra-experimental-features flakes --option substituters "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+	nix develop .# --extra-experimental-features nix-command --extra-experimental-features flakes --option substituters "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 	
 # rebuild all environment
 clean: 
-	rm -rf .venv .devenv
-clean-dev:
 	rm -rf .devenv
 git-log:
 	git log --graph --abbrev-commit --decorate --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-
 
 .PHONY: clean-env env git-log
 
