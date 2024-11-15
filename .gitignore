@@ -7,4 +7,5 @@ Thumbs.db
 
 # Ignore nix direnv temporary files
 .direnv/
+.idea/
 
