@@ -4,8 +4,11 @@ use ratatui::{
     widgets::{Block, BorderType, Paragraph},
     Frame,
 };
+use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::text::Text;
+use ratatui::widgets::{Borders, Clear, Wrap};
 use crate::app::App;
+use crate::screen::Screen;
 
 /// Renders the user interface widgets.
 pub fn render(app: &mut App, frame: &mut Frame) {
@@ -24,7 +27,27 @@ pub fn render(app: &mut App, frame: &mut Frame) {
         .style(Style::default().fg(Color::Cyan).bg(Color::Black))
         .centered(),
         frame.area(),
-    )
+    );
+
+    // Exit Confirm Screen
+    if let Screen::ConfirmedExitScreen = app.curr_screen {
+        frame.render_widget(Clear, frame.area());
+        let popup_block = Block::default()
+            .title("Exit Confirmation")
+            .borders(Borders::ALL)
+            .style(Style::default().fg(Color::Cyan));
+        let exit_text = Text::styled(
+            "Would you like to output the buffer as json? (y/n)",
+            Style::default().fg(Color::Red),
+        );
+        // the `trim: false` will stop the text from being cut off when over the edge of the block
+        let exit_paragraph = Paragraph::new(exit_text)
+            .block(popup_block)
+            .wrap(Wrap { trim: false });
+
+        let area = centered_rect(60, 25, frame.area());
+        frame.render_widget(exit_paragraph, area);
+    }
 }
 
 /// helper function to create a centered rect using up certain percentage of the available rect `r`

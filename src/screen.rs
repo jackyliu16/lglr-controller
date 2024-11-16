@@ -1,5 +1,5 @@
-#[derive(Debug)]
-pub enum CurrentScreen {
+#[derive(Debug, Eq, PartialEq, Copy, Clone)]
+pub enum Screen {
     InstallFleetInfo,        // 输入舰队信息
     InstallTargetInfo,       // 输入目标信息
     SelectTargetAndFleet,    // 选择在一次袭击中的舰队和目标

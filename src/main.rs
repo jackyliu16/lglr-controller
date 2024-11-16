@@ -14,7 +14,7 @@ pub mod event;
 pub mod handler;
 pub mod tui;
 pub mod ui;
-pub mod current_screen;
+pub mod screen;
 
 #[tokio::main]
 async fn main() -> AppResult<()> {
