@@ -1,5 +1,6 @@
 use std::error;
 use crate::screen::Screen;
+use crate::structs::fleet::Fleet;
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
@@ -11,6 +12,7 @@ pub struct App {
     pub running: bool,
     pub curr_screen: Screen,
     pub prev_screen: Screen,
+    pub fleet_list: Vec<Fleet>,
 }
 
 impl Default for App {
@@ -19,6 +21,7 @@ impl Default for App {
             running: true,
             prev_screen: Screen::InstallFleetInfo,
             curr_screen: Screen::InstallFleetInfo,
+            fleet_list: vec![],
         }
     }
 }
