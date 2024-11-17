@@ -1,7 +1,5 @@
-use std::cmp::PartialEq;
-use crate::app::{App, AppResult};
+use crate::model::{App, AppResult, screen::Screen};
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
-use crate::screen::Screen;
 
 
 /// Handles the key events and updates the state of [`App`].

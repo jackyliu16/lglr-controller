@@ -3,19 +3,17 @@ use std::io;
 use ratatui::{backend::CrosstermBackend, Terminal};
 
 use crate::{
-    app::{App, AppResult},
+    model::{App, AppResult},
     event::{Event, EventHandler},
     handler::handle_key_events,
     tui::Tui,
 };
 
-pub mod app;
 pub mod event;
 pub mod handler;
 pub mod tui;
-pub mod ui;
-pub mod screen;
-pub mod structs;
+pub mod view;
+pub mod model;
 
 #[tokio::main]
 async fn main() -> AppResult<()> {

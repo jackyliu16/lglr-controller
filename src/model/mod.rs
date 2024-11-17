@@ -1,6 +1,10 @@
 use std::error;
-use crate::screen::Screen;
-use crate::structs::fleet::Fleet;
+
+pub mod fleet;
+use fleet::Fleet;
+pub mod position;
+pub mod screen;
+use screen::Screen;
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;

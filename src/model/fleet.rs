@@ -1,4 +1,4 @@
-use crate::structs::position::Position;
+use super::position::Position;
 
 #[derive(Debug)]
 pub struct Fleet {

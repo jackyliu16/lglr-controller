@@ -9,10 +9,7 @@ use ratatui::{
 };
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::text::Text;
-use ratatui::widgets::{Borders, Clear, Wrap};
-use crate::app::App;
-use crate::screen::Screen;
-use crate::ui;
+use crate::model::{App, screen::Screen};
 
 /// Renders the user interface widgets.
 pub fn render(app: &mut App, frame: &mut Frame) {

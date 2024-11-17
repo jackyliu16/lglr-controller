@@ -1,7 +1,7 @@
 use ratatui::Frame;
 use ratatui::style::Color;
 use ratatui::style::palette::tailwind;
-use crate::app::App;
+use crate::model::App;
 
 pub fn install_fleet_info_render(app: &mut App, frame: &mut Frame) {
 

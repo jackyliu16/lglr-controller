@@ -2,8 +2,8 @@ use ratatui::Frame;
 use ratatui::style::{Color, Style};
 use ratatui::text::Text;
 use ratatui::widgets::{Block, Borders, Clear, Paragraph, Wrap};
-use crate::app::App;
-use crate::ui::centered_rect;
+use crate::model::App;
+use super::centered_rect;
 
 pub fn render(app: &mut App, frame: &mut Frame) {
     frame.render_widget(Clear, frame.area());
