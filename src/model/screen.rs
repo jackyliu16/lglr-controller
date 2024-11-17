@@ -33,4 +33,5 @@ pub enum Screen {
 //  │               │               │
 //  │               │ Ctrl + N      │
 //  │               ▼               │
-//  └──────ConfirmedExitScreen    ──┘
+//  └──────FleetDepartureCountdown──┘
+

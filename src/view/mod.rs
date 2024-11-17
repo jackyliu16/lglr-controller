@@ -28,6 +28,7 @@ pub fn render(app: &mut App, frame: &mut Frame) {
 
     render_title(title_area, frame.buffer_mut());
     render_center(inner_area, frame.buffer_mut());
+    render_footer(app, footer_area, frame.buffer_mut());
 }
 
 /// helper function to create a centered rect using up certain percentage of the available rect `r`
@@ -70,8 +71,17 @@ fn render_center(area: Rect, buf: &mut Buffer) {
         .centered();
 }
 
-fn render_footer(area: Rect, buf: &mut Buffer) {
-    Line::raw("◄ ► to change tab | Press q to quit")
+fn render_footer(app: &App, area: Rect, buf: &mut Buffer) {
+    let footer_msg = match app.curr_screen {
+        Screen::InstallFleetInfo    => "tab to switch between fleet and target | Ctrl+N to next",
+        Screen::InstallTargetInfo   => "tab to switch between fleet and target | Ctrl+N to next | Ctrl+P to previous",
+        Screen::SelectTargetAndFleet => "Ctrl+[N]ext | Ctrl+[P]revious | Ctrl+[L/R] for switch between blocks | Enter to select",
+        Screen::FleetRunningTimeScreen  => "Ctrl+N to next screen | Ctrl+P to previous screen",
+        Screen::FleetDepartureCountdown => "Ctrl+N to next screen | Ctrl+P to previous screen",
+        Screen::ConfirmedExitScreen => "Press 'Y' to exit the application or 'N' to return to the previous page.",
+    };
+
+    Line::raw(footer_msg)
         .centered()
         .render(area, buf);
 }
