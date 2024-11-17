@@ -1,15 +1,15 @@
-pub mod InstallFleetInfo;
 pub mod ConfirmedExitScreen;
+pub mod fleet;
 
+use crate::model::{screen::Screen, App};
+use ratatui::layout::{Constraint, Direction, Layout, Rect};
+use ratatui::text::Text;
 use ratatui::{
     layout::Alignment,
     style::{Color, Style},
     widgets::{Block, BorderType, Paragraph},
     Frame,
 };
-use ratatui::layout::{Constraint, Direction, Layout, Rect};
-use ratatui::text::Text;
-use crate::model::{App, screen::Screen};
 
 /// Renders the user interface widgets.
 pub fn render(app: &mut App, frame: &mut Frame) {

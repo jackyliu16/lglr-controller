@@ -14,8 +14,10 @@ pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 pub struct App {
     /// Is the application running?
     pub running: bool,
+    /// The current screen loading
     pub curr_screen: Screen,
-    pub prev_screen: Screen,
+    pub prev_screen: Screen, // TODO: it is possible to remove it by popup or something?
+    /// The list contains all fleet infos
     pub fleet_list: Vec<Fleet>,
 }
 
