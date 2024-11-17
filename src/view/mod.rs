@@ -3,13 +3,15 @@ pub mod fleet;
 
 use crate::model::{screen::Screen, App};
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
-use ratatui::text::Text;
+use ratatui::text::{Line, Text};
 use ratatui::{
+    prelude::{Stylize, Widget},
     layout::Alignment,
     style::{Color, Style},
     widgets::{Block, BorderType, Paragraph},
     Frame,
 };
+use ratatui::buffer::Buffer;
 
 /// Renders the user interface widgets.
 pub fn render(app: &mut App, frame: &mut Frame) {
@@ -17,23 +19,15 @@ pub fn render(app: &mut App, frame: &mut Frame) {
     // See the following resources:
     // - https://docs.rs/ratatui/latest/ratatui/widgets/index.html
     // - https://github.com/ratatui/ratatui/tree/master/examples
-    match app.curr_screen {
-        Screen::ConfirmedExitScreen => ConfirmedExitScreen::render(app, frame),
-        _ => {
-            frame.render_widget(
-                Paragraph::new(Text::from("Hello, World !"))
-                    .block(
-                        Block::bordered()
-                            .title("Template")
-                            .title_alignment(Alignment::Center)
-                            .border_type(BorderType::Rounded),
-                    )
-                    .style(Style::default().fg(Color::Cyan).bg(Color::Black))
-                    .centered(),
-                frame.area(),
-            );
-        }
-    }
+    use Constraint::{Length, Min};
+    let vertical_chunks = Layout::vertical([Length(1), Min(0), Length(1)]);
+    let [header_area, inner_area, footer_area] = vertical_chunks.areas(frame.area());
+
+    let horizontal = Layout::horizontal([Min(0), Length(20)]);
+    let [tabs_area, title_area] = horizontal.areas(header_area);
+
+    render_title(title_area, frame.buffer_mut());
+    render_center(inner_area, frame.buffer_mut());
 }
 
 /// helper function to create a centered rect using up certain percentage of the available rect `r`
@@ -59,3 +53,26 @@ pub fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
         ])
         .split(popup_layout[1])[1] // Return the middle chunk
 }
+
+fn render_title(area: Rect, buf: &mut Buffer) {
+    "LGLR Commander Control TUI".bold().render(area, buf);
+}
+
+fn render_center(area: Rect, buf: &mut Buffer) {
+    Paragraph::new(Text::from("Hello, World !"))
+        .block(
+            Block::bordered()
+                .title("Template")
+                .title_alignment(Alignment::Center)
+                .border_type(BorderType::Rounded),
+        )
+        .style(Style::default().fg(Color::Cyan).bg(Color::Black))
+        .centered();
+}
+
+fn render_footer(area: Rect, buf: &mut Buffer) {
+    Line::raw("◄ ► to change tab | Press q to quit")
+        .centered()
+        .render(area, buf);
+}
+
