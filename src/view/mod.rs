@@ -68,7 +68,8 @@ fn render_center(area: Rect, buf: &mut Buffer) {
                 .border_type(BorderType::Rounded),
         )
         .style(Style::default().fg(Color::Cyan).bg(Color::Black))
-        .centered();
+        .centered()
+        .render(area, buf);
 }
 
 fn render_footer(app: &App, area: Rect, buf: &mut Buffer) {
