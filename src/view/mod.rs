@@ -7,11 +7,14 @@ use ratatui::text::{Line, Text};
 use ratatui::{
     prelude::{Stylize, Widget},
     layout::Alignment,
-    style::{Color, Style},
+    style::{Color, Style, palette::tailwind},
     widgets::{Block, BorderType, Paragraph},
     Frame,
 };
 use ratatui::buffer::Buffer;
+use ratatui::widgets::Tabs;
+use strum::IntoEnumIterator;
+use std::iter::Map;
 
 /// Renders the user interface widgets.
 pub fn render(app: &mut App, frame: &mut Frame) {
@@ -26,6 +29,7 @@ pub fn render(app: &mut App, frame: &mut Frame) {
     let horizontal = Layout::horizontal([Min(0), Length(20)]);
     let [tabs_area, title_area] = horizontal.areas(header_area);
 
+    render_tabs(app, tabs_area, frame.buffer_mut());
     render_title(title_area, frame.buffer_mut());
     render_center(inner_area, frame.buffer_mut());
     render_footer(app, footer_area, frame.buffer_mut());
@@ -53,6 +57,21 @@ pub fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
             Constraint::Percentage((100 - percent_x) / 2),
         ])
         .split(popup_layout[1])[1] // Return the middle chunk
+}
+
+fn render_tabs(app: &App, area: Rect, buf: &mut Buffer) {
+    let titles = Screen::iter().map(|name| Line::from(format!("  {name}  "))
+        .fg(tailwind::SLATE.c200)
+        .bg(tailwind::BLUE.c900)
+    );
+    let highlight_style = (Color::default(), tailwind::BLUE.c700);
+    let select_tab_index = app.curr_screen as usize;
+    Tabs::new(titles)
+        .highlight_style(highlight_style)
+        .select(select_tab_index)
+        .padding("", "")
+        .divider(" ")
+        .render(area, buf);
 }
 
 fn render_title(area: Rect, buf: &mut Buffer) {

@@ -372,6 +372,7 @@ dependencies = [
  "crossterm",
  "futures",
  "ratatui",
+ "strum",
  "tokio",
 ]
 
