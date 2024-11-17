@@ -17,6 +17,19 @@ use strum::IntoEnumIterator;
 use std::iter::Map;
 
 /// Renders the user interface widgets.
+///
+//                        TOTAL SCREEN
+//    ┌────────────────────────────────────────┬─────20───────┐
+//    │ Tab1 Tab2 Tab3 Tab4   HEADER           │    title     1
+//    ┼────────────────────────────────────────┴──────────────┼
+//    │                                                       │
+//    │                    INNER SCREEN                       │
+//    │           (display base on tabs and apps)             │
+//    │                                                       │
+//    ┼───────────────────────────────────────────────────────┼
+//    │                       FOOTER                          1
+//    └───────────────────────────────────────────────────────┘
+//
 pub fn render(app: &mut App, frame: &mut Frame) {
     // This is where you add new widgets.
     // See the following resources:
@@ -29,9 +42,9 @@ pub fn render(app: &mut App, frame: &mut Frame) {
     let horizontal = Layout::horizontal([Min(0), Length(20)]);
     let [tabs_area, title_area] = horizontal.areas(header_area);
 
-    render_tabs(app, tabs_area, frame.buffer_mut());
+    render_tabs(app,tabs_area, frame.buffer_mut());
     render_title(title_area, frame.buffer_mut());
-    render_center(inner_area, frame.buffer_mut());
+    render_center(app, inner_area, frame.buffer_mut());
     render_footer(app, footer_area, frame.buffer_mut());
 }
 
@@ -60,6 +73,7 @@ pub fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
 }
 
 fn render_tabs(app: &App, area: Rect, buf: &mut Buffer) {
+    // Use the strum library to get all the elements of Screen
     let titles = Screen::iter().map(|name| Line::from(format!("  {name}  "))
         .fg(tailwind::SLATE.c200)
         .bg(tailwind::BLUE.c900)
@@ -78,17 +92,21 @@ fn render_title(area: Rect, buf: &mut Buffer) {
     "LGLR Commander Control TUI".bold().render(area, buf);
 }
 
-fn render_center(area: Rect, buf: &mut Buffer) {
-    Paragraph::new(Text::from("Hello, World !"))
-        .block(
-            Block::bordered()
-                .title("Template")
-                .title_alignment(Alignment::Center)
-                .border_type(BorderType::Rounded),
-        )
-        .style(Style::default().fg(Color::Cyan).bg(Color::Black))
-        .centered()
-        .render(area, buf);
+fn render_center(app: &App, area: Rect, buf: &mut Buffer) {
+    match app.curr_screen {
+        _ => {
+            Paragraph::new(Text::from("Hello, World !"))
+                .block(
+                    Block::bordered()
+                        .title("Template")
+                        .title_alignment(Alignment::Center)
+                        .border_type(BorderType::Rounded),
+                )
+                .style(Style::default().fg(Color::Cyan).bg(Color::Black))
+                .centered()
+                .render(area, buf);
+        }
+    }
 }
 
 fn render_footer(app: &App, area: Rect, buf: &mut Buffer) {
