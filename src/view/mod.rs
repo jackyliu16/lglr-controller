@@ -78,7 +78,7 @@ fn render_tabs(app: &App, area: Rect, buf: &mut Buffer) {
         .fg(tailwind::SLATE.c200)
         .bg(tailwind::BLUE.c900)
     );
-    let highlight_style = (Color::default(), tailwind::BLUE.c700);
+    let highlight_style = (Color::default(), tailwind::BLUE.c500);
     let select_tab_index = app.curr_screen as usize;
     Tabs::new(titles)
         .highlight_style(highlight_style)
