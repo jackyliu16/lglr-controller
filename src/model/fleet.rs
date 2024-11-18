@@ -8,6 +8,7 @@ pub struct Fleet {
     position: Position,               // 当前所在位置
     conventional_engine_speed: usize, // 常规引擎航速
     curvature_engine_speed: usize,    // 曲率引擎航速
+    info: String,
 }
 
 impl Fleet {
@@ -17,6 +18,7 @@ impl Fleet {
         position: Position,
         conventional_engine_speed: usize,
         curvature_engine_speed: usize,
+        info: String,
     ) -> Self {
         Self {
             belonger,
@@ -24,6 +26,7 @@ impl Fleet {
             position,
             conventional_engine_speed,
             curvature_engine_speed,
+            info,
         }
     }
 }
