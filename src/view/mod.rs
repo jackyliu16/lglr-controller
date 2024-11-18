@@ -72,10 +72,12 @@ pub fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
 
 fn render_tabs(app: &App, area: Rect, buf: &mut Buffer) {
     // Use the strum library to get all the elements of Screen
-    let titles = Screen::iter().map(|name| Line::from(format!("  {name}  "))
-        .fg(tailwind::SLATE.c200)
-        .bg(tailwind::BLUE.c900)
-    );
+    let titles = Screen::iter()
+        .filter(|val| *val != Screen::ConfirmedExitScreen)
+        .map(|name| Line::from(format!("  {name}  "))
+            .fg(tailwind::SLATE.c200)
+            .bg(tailwind::BLUE.c900)
+        );
     let highlight_style = (Color::default(), tailwind::BLUE.c500);
     let select_tab_index = app.curr_screen as usize;
     Tabs::new(titles)
