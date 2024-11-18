@@ -17,18 +17,18 @@ use strum::IntoEnumIterator;
 
 /// Renders the user interface widgets.
 ///
-//                        TOTAL SCREEN
-//    ┌────────────────────────────────────────┬─────20───────┐
-//    │ Tab1 Tab2 Tab3 Tab4   HEADER           │    title     1
-//    ┼────────────────────────────────────────┴──────────────┼
-//    │                                                       │
-//    │                    INNER SCREEN                       │
-//    │           (display base on tabs and apps)             │
-//    │                                                       │
-//    ┼───────────────────────────────────────────────────────┼
-//    │                       FOOTER                          1
-//    └───────────────────────────────────────────────────────┘
-//
+///                       TOTAL SCREEN
+///   ┌────────────────────────────────────────┬─────20───────┐
+///   │ Tab1 Tab2 Tab3 Tab4   HEADER           │    title     1
+///   ┼────────────────────────────────────────┴──────────────┼
+///   │                                                       │
+///   │                    INNER SCREEN                       │
+///   │           (display base on tabs and apps)             │
+///   │                                                       │
+///   ┼───────────────────────────────────────────────────────┼
+///   │                       FOOTER                          1
+///   └───────────────────────────────────────────────────────┘
+///
 pub fn render(app: &mut App, frame: &mut Frame) {
     // This is where you add new widgets.
     // See the following resources:
