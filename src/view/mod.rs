@@ -1,5 +1,4 @@
 pub mod ConfirmedExitScreen;
-pub mod fleet;
 
 use crate::model::{screen::Screen, App};
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
@@ -93,6 +92,7 @@ fn render_title(area: Rect, buf: &mut Buffer) {
 
 fn render_center(app: &App, area: Rect, frame: &mut Frame) {
     match app.curr_screen {
+        Screen::ConfirmedExitScreen => ConfirmedExitScreen::render(frame),
         _ => {
             Paragraph::new(Text::from("Hello, World !"))
                 .block(
