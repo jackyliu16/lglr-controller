@@ -1,4 +1,5 @@
 pub mod ConfirmedExitScreen;
+mod helloworld;
 
 use crate::model::{screen::Screen, App};
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
@@ -42,7 +43,7 @@ pub fn render(app: &mut App, frame: &mut Frame) {
 
     render_tabs(app,tabs_area, frame.buffer_mut());
     render_title(title_area, frame.buffer_mut());
-    render_center(app, inner_area, frame);
+    render_inner(app, inner_area, frame);
     render_footer(app, footer_area, frame.buffer_mut());
 }
 
@@ -92,20 +93,11 @@ fn render_title(area: Rect, buf: &mut Buffer) {
     "LGLR Commander Control TUI".bold().render(area, buf);
 }
 
-fn render_center(app: &App, area: Rect, frame: &mut Frame) {
+fn render_inner(app: &App, area: Rect, frame: &mut Frame) {
     match app.curr_screen {
         Screen::ConfirmedExitScreen => ConfirmedExitScreen::render(frame),
         _ => {
-            Paragraph::new(Text::from("Hello, World !"))
-                .block(
-                    Block::bordered()
-                        .title("Template")
-                        .title_alignment(Alignment::Center)
-                        .border_type(BorderType::Rounded),
-                )
-                .style(Style::default().fg(Color::Cyan).bg(Color::Black))
-                .centered()
-                .render(area, frame.buffer_mut());
+            helloworld::render(area, frame);
         }
     }
 }
