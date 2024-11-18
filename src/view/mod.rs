@@ -14,7 +14,6 @@ use ratatui::{
 use ratatui::buffer::Buffer;
 use ratatui::widgets::Tabs;
 use strum::IntoEnumIterator;
-use std::iter::Map;
 
 /// Renders the user interface widgets.
 ///
@@ -44,7 +43,7 @@ pub fn render(app: &mut App, frame: &mut Frame) {
 
     render_tabs(app,tabs_area, frame.buffer_mut());
     render_title(title_area, frame.buffer_mut());
-    render_center(app, inner_area, frame.buffer_mut());
+    render_center(app, inner_area, frame);
     render_footer(app, footer_area, frame.buffer_mut());
 }
 
@@ -92,7 +91,7 @@ fn render_title(area: Rect, buf: &mut Buffer) {
     "LGLR Commander Control TUI".bold().render(area, buf);
 }
 
-fn render_center(app: &App, area: Rect, buf: &mut Buffer) {
+fn render_center(app: &App, area: Rect, frame: &mut Frame) {
     match app.curr_screen {
         _ => {
             Paragraph::new(Text::from("Hello, World !"))
@@ -104,7 +103,7 @@ fn render_center(app: &App, area: Rect, buf: &mut Buffer) {
                 )
                 .style(Style::default().fg(Color::Cyan).bg(Color::Black))
                 .centered()
-                .render(area, buf);
+                .render(area, frame.buffer_mut());
         }
     }
 }
