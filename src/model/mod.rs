@@ -5,6 +5,7 @@ use fleet::Fleet;
 pub mod position;
 pub mod screen;
 use screen::Screen;
+use crate::model::position::Position;
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
@@ -23,11 +24,19 @@ pub struct App {
 
 impl Default for App {
     fn default() -> Self {
+        let fleet = Fleet::new(     // TODO REMOVE THIS TEMP VAR
+            String::from("审判之矛"),
+            String::from("1 号舰队"),
+            Position::new(3440, 2922),
+            540,
+            3245,
+            String::new(),
+        );
         Self {
             running: true,
             prev_screen: Screen::InstallFleetInfo,
             curr_screen: Screen::InstallFleetInfo,
-            fleet_list: vec![],
+            fleet_list: vec![fleet],    // TODO REMOVE THIS TEMP VAR
         }
     }
 }

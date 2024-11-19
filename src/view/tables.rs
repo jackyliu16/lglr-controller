@@ -1,8 +1,9 @@
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Rect};
 use ratatui::prelude::Widget;
-use ratatui::style::Color;
-use ratatui::widgets::{ScrollbarState, TableState};
+use ratatui::style::{Color, Modifier, Style, Stylize};
+use ratatui::text::Text;
+use ratatui::widgets::{Cell, HighlightSpacing, Row, ScrollbarState, TableState};
 use table_color::TableColors;
 use crate::model::fleet::Fleet;
 
@@ -15,7 +16,7 @@ pub struct Table {
     items: Vec<Fleet>,
     col_name: Vec<String>,
     col_len: Vec<Constraint>,
-    color: TableColors,
+    colors: TableColors,
 }
 
 impl Table {
@@ -26,7 +27,7 @@ impl Table {
             items,
             col_name,
             col_len,
-            color: TableColors::default(),
+            colors: TableColors::default(),
         }
     }
 
@@ -62,8 +63,62 @@ impl Table {
     pub fn next_col(&mut self) { self.table_state.select_next_column(); }
     pub fn prev_col(&mut self) { self.table_state.select_previous_column(); }
 
-    pub fn set_color(&mut self, color: TableColors) { self.color = color; }
+    pub fn set_color(&mut self, color: TableColors) { self.colors = color; }
+}
 
+impl Widget for &mut Table {
+    fn render(self, area: Rect, buf: &mut Buffer)
+    where
+        Self: Sized
+    {
+        let header_style = Style::default()
+            .fg(self.colors.header_fg)
+            .bg(self.colors.header_bg);
+        let selected_row_style = Style::default()
+            .add_modifier(Modifier::REVERSED)
+            .fg(self.colors.selected_row_style_fg);
+        let selected_col_style = Style::default().fg(self.colors.selected_column_style_fg);
+        let selected_cell_style = Style::default()
+            .add_modifier(Modifier::REVERSED)
+            .fg(self.colors.selected_cell_style_fg);
+
+        let header = self.col_name.clone()
+            .into_iter()
+            .map(Cell::from)
+            .collect::<Row>()
+            .style(header_style)
+            .height(1);
+        let rows = self.items.iter().enumerate().map(|(i, data)| {
+            let color = match i % 2 {
+                0 => self.colors.normal_row_color,
+                _ => self.colors.alt_row_color,
+            };
+            let item = data.ref_array();
+            item.into_iter()
+                .map(|content| Cell::from(Text::from(format!("\n{content}\n"))))
+                .collect::<Row>()
+                .style(Style::new().fg(self.colors.row_fg).bg(color))
+                .height(4)
+        });
+        let bar = " █ ";
+        ratatui::widgets::Table::new(
+            rows,
+            &self.col_len
+        )
+            .header(header)
+            .row_highlight_style(selected_row_style)
+            .column_highlight_style(selected_col_style)
+            .cell_highlight_style(selected_cell_style)
+            .highlight_symbol(Text::from(vec![
+                "".into(),
+                bar.into(),
+                bar.into(),
+                "".into(),
+            ]))
+            .bg(self.colors.buffer_bg)
+            .highlight_spacing(HighlightSpacing::Always)
+            .render(area, buf);
+    }
 }
 
 mod table_color {

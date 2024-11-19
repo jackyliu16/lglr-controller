@@ -29,4 +29,15 @@ impl Fleet {
             info,
         }
     }
+
+    pub fn ref_array(&self) -> [String; 6] {
+       [
+           self.belonger.clone(),
+           self.name.clone(),
+           self.position.to_string(),
+           self.conventional_engine_speed.to_string(),
+           self.curvature_engine_speed.to_string(),
+           self.info.clone(),
+       ]
+    }
 }

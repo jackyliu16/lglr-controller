@@ -13,8 +13,10 @@ use ratatui::{
     Frame,
 };
 use ratatui::buffer::Buffer;
-use ratatui::widgets::Tabs;
+use ratatui::widgets::{Clear, Tabs};
 use strum::IntoEnumIterator;
+use crate::model::fleet::Fleet;
+use crate::model::position::Position;
 
 /// Renders the user interface widgets.
 ///
@@ -99,11 +101,26 @@ fn render_inner(app: &App, area: Rect, frame: &mut Frame) {
         Screen::ConfirmedExitScreen => ConfirmedExitScreen::render(frame),
         _ => {
             // helloworld::render(area, frame);
-            let tab = tables::Table::new(
+            let mut tab = tables::Table::new(
                 app.fleet_list.clone(),
-                vec![String::from("tab 1"); 6],
-                vec![Constraint::Length(5); 6],
+                vec![
+                    String::from("Belonger"),
+                    String::from("name"),
+                    String::from("position"),
+                    String::from("conventional speed"),
+                    String::from("curvature speed"),
+                    String::from("info"),
+                ],
+                vec![
+                    Constraint::Length(12),
+                    Constraint::Length(12),
+                    Constraint::Length(12),
+                    Constraint::Length(20),
+                    Constraint::Length(20),
+                    Constraint::Min(12),
+                ],
             );
+            frame.render_widget(&mut tab, area);
         }
     }
 }

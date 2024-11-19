@@ -2,8 +2,8 @@ use std::fmt::Formatter;
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub struct Position {
-    x: usize,
-    y: usize,
+    pub x: usize,
+    pub y: usize,
 }
 
 impl Position {
