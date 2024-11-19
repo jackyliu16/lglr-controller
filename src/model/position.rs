@@ -17,3 +17,4 @@ impl std::fmt::Display for Position {
         write!(f, "({},{})", self.x, self.y)
     }
 }
+
