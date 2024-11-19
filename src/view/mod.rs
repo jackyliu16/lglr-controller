@@ -1,5 +1,6 @@
 pub mod ConfirmedExitScreen;
 mod helloworld;
+mod tables;
 
 use crate::model::{screen::Screen, App};
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
