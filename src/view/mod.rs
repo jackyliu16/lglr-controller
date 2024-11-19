@@ -98,7 +98,12 @@ fn render_inner(app: &App, area: Rect, frame: &mut Frame) {
     match app.curr_screen {
         Screen::ConfirmedExitScreen => ConfirmedExitScreen::render(frame),
         _ => {
-            helloworld::render(area, frame);
+            // helloworld::render(area, frame);
+            let tab = tables::Table::new(
+                app.fleet_list.clone(),
+                vec![String::from("tab 1"); 6],
+                vec![Constraint::Length(5); 6],
+            );
         }
     }
 }

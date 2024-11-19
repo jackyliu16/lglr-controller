@@ -1,5 +1,5 @@
 use ratatui::buffer::Buffer;
-use ratatui::layout::Rect;
+use ratatui::layout::{Constraint, Rect};
 use ratatui::prelude::Widget;
 use ratatui::style::Color;
 use ratatui::widgets::{ScrollbarState, TableState};
@@ -9,20 +9,20 @@ use crate::model::fleet::Fleet;
 const ITEM_HEIGHT: usize = 4;
 
 // BC we will use render_stateful_widget, it is impossible to use `impl Widget for Table` to impl it
-struct Table {
+pub struct Table {
     table_state: TableState,
     scrollbar_state: ScrollbarState,
-    items: &'static Vec<Fleet>,
-    col_name: Vec<&'static str>,
-    col_len: Vec<usize>,
+    items: Vec<Fleet>,
+    col_name: Vec<String>,
+    col_len: Vec<Constraint>,
     color: TableColors,
 }
 
 impl Table {
-    fn new(items: &'static Vec<Fleet>, col_name: Vec<&'static str>, col_len: Vec<usize>) -> Self {
+    pub fn new(items: Vec<Fleet>, col_name: Vec<String>, col_len: Vec<Constraint>) -> Self {
         Self {
             table_state: TableState::default().with_selected(0),
-            scrollbar_state: ScrollbarState::new((items.len() - 1) * ITEM_HEIGHT),
+            scrollbar_state: ScrollbarState::new((if items.is_empty() { 0 } else { (items.len() - 1)}) * ITEM_HEIGHT),
             items,
             col_name,
             col_len,

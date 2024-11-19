@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 use super::position::Position;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Fleet {
     belonger: String,                 // 舰队归属
     name: String,                     // 舰队名称
