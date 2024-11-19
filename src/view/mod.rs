@@ -120,7 +120,7 @@ fn render_inner(app: &App, area: Rect, frame: &mut Frame) {
                     Constraint::Min(12),
                 ],
             );
-            frame.render_widget(&mut tab, area);
+            frame.render_stateful_widget(&mut tab, area, &mut (tab.table_state.clone(), tab.scrollbar_state.clone()));
         }
     }
 }

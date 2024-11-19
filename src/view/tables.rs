@@ -1,9 +1,9 @@
 use ratatui::buffer::Buffer;
-use ratatui::layout::{Constraint, Rect};
+use ratatui::layout::{Constraint, Margin, Rect};
 use ratatui::prelude::Widget;
 use ratatui::style::{Color, Modifier, Style, Stylize};
 use ratatui::text::Text;
-use ratatui::widgets::{Cell, HighlightSpacing, Row, ScrollbarState, TableState};
+use ratatui::widgets::{Cell, HighlightSpacing, Row, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget, TableState};
 use table_color::TableColors;
 use crate::model::fleet::Fleet;
 
@@ -11,8 +11,8 @@ const ITEM_HEIGHT: usize = 4;
 
 // BC we will use render_stateful_widget, it is impossible to use `impl Widget for Table` to impl it
 pub struct Table {
-    table_state: TableState,
-    scrollbar_state: ScrollbarState,
+    pub table_state: TableState,
+    pub scrollbar_state: ScrollbarState,
     items: Vec<Fleet>,
     col_name: Vec<String>,
     col_len: Vec<Constraint>,
@@ -66,11 +66,10 @@ impl Table {
     pub fn set_color(&mut self, color: TableColors) { self.colors = color; }
 }
 
-impl Widget for &mut Table {
-    fn render(self, area: Rect, buf: &mut Buffer)
-    where
-        Self: Sized
-    {
+impl StatefulWidget for &mut Table {
+    type State = (TableState, ScrollbarState);
+
+    fn render(self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
         let header_style = Style::default()
             .fg(self.colors.header_fg)
             .bg(self.colors.header_bg);
@@ -101,6 +100,8 @@ impl Widget for &mut Table {
                 .height(4)
         });
         let bar = " █ ";
+
+        let (mut table_state, mut scroll_state) = state;
         ratatui::widgets::Table::new(
             rows,
             &self.col_len
@@ -117,7 +118,19 @@ impl Widget for &mut Table {
             ]))
             .bg(self.colors.buffer_bg)
             .highlight_spacing(HighlightSpacing::Always)
-            .render(area, buf);
+            .render(area, buf, &mut table_state);
+
+        // render_scrollbar
+        Scrollbar::default()
+            .orientation(ScrollbarOrientation::VerticalRight)
+            .begin_symbol(None)
+            .end_symbol(None)
+            .render(area.inner(Margin {
+                vertical: 1,
+                horizontal: 1
+            }), buf, &mut scroll_state);
+
+        // *state = (&self.scrollbar_state, &self.table_state);
     }
 }
 
