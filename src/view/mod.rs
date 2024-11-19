@@ -15,6 +15,7 @@ use ratatui::{
 use ratatui::buffer::Buffer;
 use ratatui::widgets::Tabs;
 use strum::IntoEnumIterator;
+use crate::model::fleet::Fleet;
 
 /// Renders the user interface widgets.
 ///
@@ -30,7 +31,7 @@ use strum::IntoEnumIterator;
 ///   │                       FOOTER                          1
 ///   └───────────────────────────────────────────────────────┘
 ///
-pub fn render(app: &mut App, frame: &mut Frame) {
+pub fn render<'a>(app: &'a mut App, frame: &mut Frame<'a>) {
     // This is where you add new widgets.
     // See the following resources:
     // - https://docs.rs/ratatui/latest/ratatui/widgets/index.html
@@ -94,11 +95,29 @@ fn render_title(area: Rect, buf: &mut Buffer) {
     "LGLR Commander Control TUI".bold().render(area, buf);
 }
 
-fn render_inner(app: &App, area: Rect, frame: &mut Frame) {
+fn render_inner<'a>(app: &'a App, area: Rect, frame: &mut Frame<'a>) {
     match app.curr_screen {
         Screen::ConfirmedExitScreen => ConfirmedExitScreen::render(frame),
         _ => {
-            helloworld::render(area, frame);
+            // helloworld::render(area, frame);
+            let mut tables =
+                tables::ScreenList::new(&app.fleet_list, vec![
+                    String::from("Tab 1"),
+                    String::from("Tab 1"),
+                    String::from("Tab 1"),
+                    String::from("Tab 1"),
+                    String::from("Tab 1"),
+                    String::from("Tab 1"),
+                ], vec![
+                    Constraint::Length(3),
+                    Constraint::Length(3),
+                    Constraint::Length(3),
+                    Constraint::Length(3),
+                    Constraint::Length(3),
+                    Constraint::Length(3),
+                    Constraint::Min(3),
+                ]);
+            frame.render_widget(&mut tables, area);
         }
     }
 }

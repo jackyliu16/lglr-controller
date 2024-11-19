@@ -29,4 +29,39 @@ impl Fleet {
             info,
         }
     }
+
+    pub(crate) fn ref_array(&self) -> [String; 6] {
+        [
+            self.belonger.clone(),
+            self.name.clone(),
+            self.position.to_string(),
+            self.conventional_engine_speed.to_string(),
+            self.curvature_engine_speed.to_string(),
+            self.info.clone(),
+        ]
+    }
+
+    pub fn belonger(&self) -> &str {
+        &self.belonger
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn position(&self) -> Position {
+        self.position
+    }
+
+    pub fn conventional_engine_speed(&self) -> usize {
+        self.conventional_engine_speed
+    }
+
+    pub fn curvature_engine_speed(&self) -> usize {
+        self.curvature_engine_speed
+    }
+
+    pub fn info(&self) -> &str {
+        &self.info
+    }
 }
